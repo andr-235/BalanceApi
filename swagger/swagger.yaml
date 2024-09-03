@@ -1,0 +1,91 @@
+openapi: 3.0.1
+info:
+  title: Balance API
+  description: API для работы с балансами и платежами.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api
+paths:
+  /api/balance/GetBalances:
+    get:
+      summary: Получить балансы
+      parameters:
+        - name: accountId
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: periodType
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    periodName:
+                      type: string
+                    openingBalance:
+                      type: number
+                    calculatedAmount:
+                      type: number
+                    paidAmount:
+                      type: number
+                    closingBalance:
+                      type: number
+            application/xml:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    periodName:
+                      type: string
+                    openingBalance:
+                      type: number
+                    calculatedAmount:
+                      type: number
+                    paidAmount:
+                      type: number
+                    closingBalance:
+                      type: number
+            text/csv:
+              schema:
+                type: string
+              example: |
+                periodName,openingBalance,calculatedAmount,paidAmount,closingBalance
+        '400':
+          description: Неверный запрос
+        '404':
+          description: Не найдено
+        '500':
+          description: Ошибка сервера
+  /api/balance/GetCurrentDebt:
+    get:
+      summary: Получить текущий долг
+      parameters:
+        - name: accountId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currentDebt:
+                    type: number
+        '400':
+          description: Неверный запрос
+        '500':
+          description: Ошибка сервера
